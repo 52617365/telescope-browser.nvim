@@ -1,19 +1,34 @@
+local has_telescope, telescope = pcall(require, 'telescope')
 local pickers = require "telescope.pickers"
 local finders = require "telescope.finders"
 local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
+if not has_telescope then
+  error('This plugins requires nvim-telescope/telescope.nvim')
+end
+
+local picker_table = {
+  { "rust", "rustdocs" },
+  { "green", "#00ff00" },
+  { "blue", "#0000ff" },
+}
+
 local someshitfuck = function(opts, engine)
   opts = opts or {}
+
+  -- Contains the website url
+  -- print(vim.inspect(engine.value[2]))
+
+  -- Contains the website name
+  -- print(vim.inspect(engine.value[1]))
+
+  print(vim.inspect(conf))
   pickers.new(opts, {
     prompt_title = "search: " .. engine.value[1],
     finder = finders.new_table {
-      results = {
-        { "red", "#ff0000" },
-        { "green", "#00ff00" },
-        { "blue", "#0000ff" },
-      },
+      results = picker_table,
       entry_maker = function(entry)
         return {
           value = entry,
@@ -31,11 +46,7 @@ local engines = function(opts)
   pickers.new(opts, {
     prompt_title = "engines",
     finder = finders.new_table {
-      results = {
-        { "red", "#ff0000" },
-        { "green", "#00ff00" },
-        { "blue", "#0000ff" },
-      },
+      results = picker_table,
       entry_maker = function(entry)
         return {
           value = entry,
@@ -59,3 +70,7 @@ local engines = function(opts)
 end
 
 engines()
+return telescope.register_extension{
+  setup = main.setup,
+  exports = { project = main.project }
+}
