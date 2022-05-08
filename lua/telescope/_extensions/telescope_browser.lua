@@ -18,11 +18,6 @@ local picker_table = {
   { "blue", "#0000ff" },
 }
 
-local empty_table = {
-  { "", "" },
-  { "", "" },
-  { "", "" },
-}
 B.search = function(opts, engine)
   opts = opts or {}
 
@@ -33,8 +28,9 @@ B.search = function(opts, engine)
   -- print(vim.inspect(engine.value[1]))
   pickers.new(opts, {
     prompt_title = "search: " .. engine.value[1],
+    print(vim.inspect(engine)),
     finder = finders.new_table {
-      results = picker_table,
+      results = {},
       entry_maker = function(entry)
         return {
           value = entry,
@@ -43,9 +39,21 @@ B.search = function(opts, engine)
         }
       end
     },
+    -- action_state.get_current_line()
     sorter = conf.generic_sorter(opts),
+    attach_mappings = function(prompt_bufnr, map)
+      actions.select_default:replace(function()
+        actions.close(prompt_bufnr)
+        -- Gets the current line so we can use that as a query
+        local selection = action_state.get_current_line()
+        print(vim.inspect(selection))
+        -- vim.api.nvim_put({ selection[1] }, "", false, true)
+      end)
+      return true
+    end,
   }):find()
 end
+
 -- our picker function: colors
 B.engines = function(opts)
   opts = opts or {}
