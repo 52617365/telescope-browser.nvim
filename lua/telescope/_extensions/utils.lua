@@ -15,9 +15,4 @@ function U.get_visual_selection()
   -- local trimmed_lines = U.trim(lines)
   return lines
 end
-
-function U.trim(s)
-   return (s:gsub("^%s*(.-)%s*$", "%1"))
-end
-
 return U

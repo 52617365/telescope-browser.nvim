@@ -1,5 +1,5 @@
 -- TODO: Don't have two functions for two difference things, just make one function and check which mode is on ":h mode()"
-local has_telescope, telescope = pcall(require, 'telescope')
+local has_telescope = pcall(require, 'telescope')
 local pickers = require "telescope.pickers"
 local finders = require "telescope.finders"
 local conf = require("telescope.config").values
@@ -20,7 +20,7 @@ local picker_table = {
   { "google", "https://www.google.com/search?channel=fs&client=ubuntu&q=" },
 }
 
-B.search = function(opts, engine)
+function search(opts, engine)
   opts = opts or {}
   -- Contains the website url
   -- print(vim.inspect(engine.value[2]))
@@ -58,35 +58,6 @@ B.search = function(opts, engine)
   }):find()
 end
 
--- our picker function: engines
--- Pass in nothing if regular search, if visual selected search then pass '<','>
-B.engine = function(opts)
-  opts = opts or {}
-  -- local visualized_shit = B.get_visual_selection()
-  pickers.new(opts, {
-    prompt_title = "engines",
-    finder = finders.new_table {
-      results = picker_table,
-      entry_maker = function(entry)
-        return {
-          value = entry,
-          display = entry[1],
-          ordinal = entry[1],
-        }
-      end
-    },
-    sorter = conf.generic_sorter(opts),
-    attach_mappings = function(prompt_bufnr, map)
-      actions.select_default:replace(function()
-        actions.close(prompt_bufnr)
-        local select_engine = action_state.get_selected_entry()
-        B.search(opts, select_engine)
-      end)
-      return true
-    end,
-  }):find()
-end
-
 -- Call this with the same binding but in visual mode.
 B.engines = function(opts)
   opts = opts or {}
@@ -113,7 +84,7 @@ B.engines = function(opts)
         print(vim.inspect(select_engine.value[1]))
         -- If then it's visual mode, else normal mode AKA selection has not been made, redirect to search screen.
         if #visualized_shit[1] == 0 then
-          B.search(opts, select_engine)
+          search(opts, select_engine)
         else
           local url = select_engine.value[2] .. visualized_shit[1]
           vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
@@ -124,5 +95,10 @@ B.engines = function(opts)
   }):find()
 end
 -- B.engines(dropdown_window)
-B.engines(dropdown_window)
-return B
+return require("telescope").register_extension {
+  exports = {
+    exports = {
+      telescope_browser = B.engines()
+    }
+  },
+}
