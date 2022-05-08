@@ -4,6 +4,7 @@ local finders = require "telescope.finders"
 local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
+local window = require "telescope.themes".get_dropdown()
 
 local B = {}
 
@@ -17,6 +18,11 @@ local picker_table = {
   { "blue", "#0000ff" },
 }
 
+local empty_table = {
+  { "", "" },
+  { "", "" },
+  { "", "" },
+}
 B.search = function(opts, engine)
   opts = opts or {}
 
@@ -25,8 +31,6 @@ B.search = function(opts, engine)
 
   -- Contains the website name
   -- print(vim.inspect(engine.value[1]))
-
-  print(vim.inspect(conf))
   pickers.new(opts, {
     prompt_title = "search: " .. engine.value[1],
     finder = finders.new_table {
@@ -63,12 +67,14 @@ B.engines = function(opts)
         actions.close(prompt_bufnr)
         local selection = action_state.get_selected_entry()
         -- print(vim.inspect(selection))
-        B.search(_, selection)
+        B.search(opts, selection)
         -- vim.api.nvim_put({ selection[1] }, "", false, true)
       end)
       return true
     end,
   }):find()
 end
+
+B.engines(window)
 
 return B
