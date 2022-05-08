@@ -44,9 +44,12 @@ B.search = function(opts, engine)
     attach_mappings = function(prompt_bufnr, map)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
+
         -- Gets the current line so we can use that as a query
         local selection = action_state.get_current_line()
         print(vim.inspect(selection))
+        
+        vim.api.nvim_command("silent " .. "!".."firefox " .. selection)
         -- vim.api.nvim_put({ selection[1] }, "", false, true)
       end)
       return true
