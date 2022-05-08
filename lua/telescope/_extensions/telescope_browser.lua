@@ -5,6 +5,8 @@ local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 
+local B = {}
+
 if not has_telescope then
   error('This plugins requires nvim-telescope/telescope.nvim')
 end
@@ -15,7 +17,7 @@ local picker_table = {
   { "blue", "#0000ff" },
 }
 
-local someshitfuck = function(opts, engine)
+B.search = function(opts, engine)
   opts = opts or {}
 
   -- Contains the website url
@@ -41,7 +43,7 @@ local someshitfuck = function(opts, engine)
   }):find()
 end
 -- our picker function: colors
-local engines = function(opts)
+B.engines = function(opts)
   opts = opts or {}
   pickers.new(opts, {
     prompt_title = "engines",
@@ -61,7 +63,7 @@ local engines = function(opts)
         actions.close(prompt_bufnr)
         local selection = action_state.get_selected_entry()
         -- print(vim.inspect(selection))
-        someshitfuck(_, selection)
+        B.search(_, selection)
         -- vim.api.nvim_put({ selection[1] }, "", false, true)
       end)
       return true
@@ -69,8 +71,4 @@ local engines = function(opts)
   }):find()
 end
 
-engines()
-return telescope.register_extension{
-  setup = main.setup,
-  exports = { project = main.project }
-}
+return B
