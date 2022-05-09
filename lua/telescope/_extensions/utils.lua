@@ -12,7 +12,6 @@ function U.get_visual_selection()
   else
     lines[n_lines] = string.sub(lines[n_lines], 1, s_end[3])
   end
-  -- local trimmed_lines = U.trim(lines)
   return lines
 end
 return U
