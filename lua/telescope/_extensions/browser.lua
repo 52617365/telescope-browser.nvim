@@ -19,45 +19,43 @@ local picker_table = {
   { "google", "https://www.google.com/search?channel=fs&client=ubuntu&q=" },
 }
 
+local search_finder = finders.new_table {
+  results = picker_table,
+  entry_maker = function(entry)
+    return {
+      value = entry,
+      display = entry[1],
+      ordinal = entry[1],
+    }
+  end
+}
+
 mod.query = function(opts, url)
   vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
 end
 
-mod.mode_check = function(opts, select_engine, visual_selection)
-  if visual_selection[1] ~= nil then
-    -- If then it's visual mode, else normal mode AKA selection has not been made, redirect to search screen.
-    if string.len(visual_selection[1]) < 1 then
-      mod.search(opts, select_engine.value)
-    end
-  else
-    local url = select_engine.value[2] .. visual_selection[1]
-    mod.query(opts, url)
-  end
-end
-
--- Call this with the same binding but in visual mode.
+-- Showcases all active sites
 mod.engine = function(opts)
   opts = opts or {}
-  local visual_selection = utils.get_visual_selection()
-  print(vim.inspect(string.len(visual_selection[1])))
   pickers.new(opts, {
     prompt_title = "engines",
-    finder = finders.new_table {
-      results = picker_table,
-      entry_maker = function(entry)
-        return {
-          value = entry,
-          display = entry[1],
-          ordinal = entry[1],
-        }
-      end
-    },
+    finder = search_finder,
     sorter = conf.generic_sorter(opts),
     attach_mappings = function(prompt_bufnr, map)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
         local select_engine = action_state.get_selected_entry()
-        mod.mode_check(prompt_bufnr, select_engine)
+        local visual_selection = utils.get_visual_selection()
+
+        if visual_selection == nil then
+          mod.search(prompt_bufnr, select_engine)
+        else
+          local url = select_engine.value[2] .. visual_selection[1]
+          mod.query(opts, url)
+        end
+
+        print(vim.inspect(visual_selection))
+        mod.mode_check(prompt_bufnr, select_engine, visual_selection)
       end)
       return true
     end,
@@ -68,25 +66,15 @@ mod.search = function(opts, engine)
   opts = opts or {}
   pickers.new(opts, {
     prompt_title = "search: " .. engine.value[1],
-    finder = finders.new_table {
-      results = {},
-      entry_maker = function(entry)
-        return {
-          value = entry,
-          display = entry[1],
-          ordinal = entry[1],
-        }
-      end
-    },
-    -- action_state.get_current_line()
+    finder = search_finder,
     sorter = conf.generic_sorter(opts),
     attach_mappings = function(prompt_bufnr, map)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
-        -- Gets the current line so we can use that as a query
-        local selection = action_state.get_current_line()
+        local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
         local url = engine.value[2] .. selection
-        mod.query(prompt_bufnr, url)
+        print(vim.inspect(url))
+        mod.query(url)
       end)
       return true
     end,
