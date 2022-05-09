@@ -6,9 +6,6 @@ local action_state = require "telescope.actions.state"
 local utils = require("utils")
 
 local mod = {}
-
-local visual_selection = nil
-
 -- Contains the website url
 -- print(vim.inspect(engine.value[2]))
 
@@ -26,22 +23,22 @@ mod.query = function(opts, url)
   vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
 end
 
-mod.mode_check = function(opts, select_engine)
+mod.mode_check = function(opts, select_engine, visual_selection)
   if visual_selection[1] ~= nil then
     -- If then it's visual mode, else normal mode AKA selection has not been made, redirect to search screen.
     if string.len(visual_selection[1]) < 1 then
       mod.search(opts, select_engine.value)
-    else
-      local url = select_engine.value[2] .. visual_selection[1]
-      mod.query(opts, url)
     end
+  else
+    local url = select_engine.value[2] .. visual_selection[1]
+    mod.query(opts, url)
   end
 end
 
 -- Call this with the same binding but in visual mode.
 mod.engine = function(opts)
   opts = opts or {}
-  visual_selection = utils.get_visual_selection()
+  local visual_selection = utils.get_visual_selection()
   print(vim.inspect(string.len(visual_selection[1])))
   pickers.new(opts, {
     prompt_title = "engines",
