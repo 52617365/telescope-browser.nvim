@@ -31,10 +31,10 @@ end
 U.open_url = function(url)
   local OS = getOS()
   print(vim.inspect(OS))
-  if OS == "unix" then
-    os.execute('open "" "' .. url .. '"')
-  else
+  if OS == "windows" then
     os.execute('start "" "' .. url .. '"')
+  else
+    os.execute('open "" "' .. url .. '"')
   end
 end
 

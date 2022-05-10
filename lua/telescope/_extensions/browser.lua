@@ -30,7 +30,6 @@ local search_finder = finders.new_table {
   end
 }
 
-
 -- Showcases all active sites
 mod.engine = function(opts)
   opts = opts or {}
