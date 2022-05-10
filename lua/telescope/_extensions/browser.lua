@@ -30,9 +30,6 @@ local search_finder = finders.new_table {
   end
 }
 
-mod.query = function(opts, url)
-  vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
-end
 
 -- Showcases all active sites
 mod.engine = function(opts)
@@ -48,14 +45,13 @@ mod.engine = function(opts)
         local visual_selection = utils.get_visual_selection()
 
         if visual_selection == nil then
-          mod.search(prompt_bufnr, select_engine)
+          mod.search(opts, select_engine);
         else
           local url = select_engine.value[2] .. visual_selection[1]
-          mod.query(opts, url)
+          vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
         end
 
         print(vim.inspect(visual_selection))
-        mod.mode_check(prompt_bufnr, select_engine, visual_selection)
       end)
       return true
     end,
@@ -73,8 +69,7 @@ mod.search = function(opts, engine)
         actions.close(prompt_bufnr)
         local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
         local url = engine.value[2] .. selection
-        print(vim.inspect(url))
-        mod.query(url)
+        vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
       end)
       return true
     end,
