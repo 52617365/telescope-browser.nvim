@@ -17,4 +17,25 @@ function U.get_visual_selection()
   return lines
 end
 
+--package.config:sub(1,1) returns the path separator, which is '\\' on Windows and '/' on Unixes.
+local getOS = function()
+  local os = package.config:sub(1, 1)
+  if os == '\\' then
+    return 'windows'
+  else if os == '/' then
+      return 'unix'
+    end
+  end
+end
+
+U.open_url = function(url)
+  local OS = getOS()
+  print(vim.inspect(OS))
+  if OS == "unix" then
+    os.execute('open "" "' .. url .. '"')
+  else
+    os.execute('start "" "' .. url .. '"')
+  end
+end
+
 return U

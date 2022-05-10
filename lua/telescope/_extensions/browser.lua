@@ -4,7 +4,6 @@ local conf = require("telescope.config").values
 local actions = require "telescope.actions"
 local action_state = require "telescope.actions.state"
 local utils = require("utils")
-
 local mod = {}
 -- Contains the website url
 -- print(vim.inspect(engine.value[2]))
@@ -12,6 +11,7 @@ local mod = {}
 -- Contains the website name
 -- print(vim.inspect(engine.value[1]))
 
+-- TODO: This will come from the config file but I have not figured that out yet.
 local picker_table = {
   { "rust", "https://www.google.com/search?channel=fs&client=ubuntu&q=" },
   { "mozilla", "https://www.google.com/search?channel=fs&client=ubuntu&q=" },
@@ -49,7 +49,8 @@ mod.engine = function(opts)
         else
           if visual_selection ~= nil then
             local url = select_engine.value[2] .. visual_selection[1]
-            vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
+            utils.open_url(url)
+            -- vim.api.nvim_command("silent " .. "!" .. "xdg-open" .. " &" .. url)
           else
             print("No query provided")
           end
@@ -72,7 +73,8 @@ mod.search = function(opts, engine)
         local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
         if selection ~= "" then
           local url = engine.value[2] .. selection
-          vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
+          utils.open_url(url)
+          -- vim.api.nvim_command("silent " .. "!" .. "xdg-open" .. " &" .. url)
         else
           print("No query provided")
         end
@@ -81,6 +83,8 @@ mod.search = function(opts, engine)
     end,
   }):find()
 end
+
+
 mod.engine()
 -- B.engines(dropdown_window)
 --return mod
