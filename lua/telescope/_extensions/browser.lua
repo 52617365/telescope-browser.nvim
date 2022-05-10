@@ -30,6 +30,7 @@ local search_finder = finders.new_table {
   end
 }
 
+--hlyank
 -- Showcases all active sites
 mod.engine = function(opts)
   opts = opts or {}
@@ -40,13 +41,13 @@ mod.engine = function(opts)
     attach_mappings = function(prompt_bufnr, map)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
-        local select_engine = action_state.get_selected_entry()
         local visual_selection = utils.get_visual_selection()
-
+        local select_engine = action_state.get_selected_entry()
+        print(vim.inspect(visual_selection))
         if visual_selection == nil then
           mod.search(opts, select_engine);
         else
-          if visual_selection ~= nil then
+          if visual_selection ~= "" then
             local url = select_engine.value[2] .. visual_selection[1]
             utils.open_url(url)
             -- vim.api.nvim_command("silent " .. "!" .. "xdg-open" .. " &" .. url)
