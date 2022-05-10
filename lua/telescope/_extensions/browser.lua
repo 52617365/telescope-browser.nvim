@@ -47,11 +47,13 @@ mod.engine = function(opts)
         if visual_selection == nil then
           mod.search(opts, select_engine);
         else
-          local url = select_engine.value[2] .. visual_selection[1]
-          vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
+          if visual_selection ~= nil then
+            local url = select_engine.value[2] .. visual_selection[1]
+            vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
+          else
+            print("No query provided")
+          end
         end
-
-        print(vim.inspect(visual_selection))
       end)
       return true
     end,
@@ -68,8 +70,12 @@ mod.search = function(opts, engine)
       actions.select_default:replace(function()
         actions.close(prompt_bufnr)
         local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
-        local url = engine.value[2] .. selection
-        vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
+        if selection ~= "" then
+          local url = engine.value[2] .. selection
+          vim.api.nvim_command("silent " .. "!" .. "firefox" .. " &" .. url)
+        else
+          print("No query provided")
+        end
       end)
       return true
     end,
