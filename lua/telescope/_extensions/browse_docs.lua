@@ -6,7 +6,7 @@ local parser = vim.treesitter.get_parser(bufnr, lang)
 -- In the example we are looking for documentation about coroutine's from the lua manual page
 -- #############################################################
 -- ##                                                         ##
--- ##             coroutine site:lua.org/manual/5.4/          ##
+-- ##           coroutine site:lua.org/manual/5.4/            ##
 -- ##                                                         ##
 -- #############################################################
 
