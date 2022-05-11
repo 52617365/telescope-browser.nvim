@@ -12,15 +12,15 @@ local parser = vim.treesitter.get_parser(bufnr, lang)
 
 -- Contains the corresponding documentation page.
 local Docs_urls = {
-  ["lua"] = "{query} site:lua.org/manual/5.4/",
-  ["rust"] = "https://doc.rust-lang.org/std/index.html?search={query}",
-  ["cpp"] = "{query} site:cppreference.com",
-  ["c"] = "{query} site:cppreference.com",
-  ["java"] = "https://docs.oracle.com/search/?q={query}&category=java&product=en%2Fjava",
-  ["javascript"] = "https://developer.mozilla.org/en-US/search?q={query}",
-  ["php"] = "https://www.php.net/manual-lookup.php?pattern={query}&scope=quickref",
-  ["vim"] = "https://vim.fandom.com/wiki/Special:Search?query={query}&scope=internal&contentType=&ns%5B0%5D=0",
-  ["kotlin"] = "https://kotlinlang.org/docs/home.html?q={query}&s=full",
+  ["lua"] = "%s site:lua.org/manual/5.4/",
+  ["rust"] = "https://doc.rust-lang.org/std/index.html?search=%s",
+  ["cpp"] = "%s site:cppreference.com",
+  ["c"] = "%s site:cppreference.com",
+  ["java"] = "https://docs.oracle.com/search/?q=%s&category=java&product=en%2Fjava",
+  ["javascript"] = "https://developer.mozilla.org/en-US/search?q=%s",
+  ["php"] = "https://www.php.net/manual-lookup.php?pattern=%s&scope=quickref",
+  ["vim"] = "https://vim.fandom.com/wiki/Special:Search?query=%s&scope=internal&contentType=&ns%5B0%5D=0",
+  ["kotlin"] = "https://kotlinlang.org/docs/home.html?q=%s&s=full",
 }
 
 -- Gets the correct file type from treesitter.
@@ -35,5 +35,7 @@ local get_docs_url = function(bufnr)
   return docs_url
 end
 
-local url = get_docs_url()
+
+local url = string.format(get_docs_url(), "insert query here")
+
 print(vim.inspect(url))
