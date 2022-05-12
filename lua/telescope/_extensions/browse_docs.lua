@@ -11,8 +11,12 @@ local action_state = require "telescope.actions.state"
 --######          the documentation searching one.        #####
 --#############################################################
 
--- local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
+local open_browser = function(opts, browser, url)
+  local query = browser .. url
+  vim.fn.jobstart(query)
+end
 
+-- local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
 local query = function(opts)
   opts = opts or {}
   pickers.new(opts, {
@@ -26,14 +30,12 @@ local query = function(opts)
         actions.close(prompt_bufnr)
         local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
         local url = string.format(docs.get_docs_url(), selection)
-        print(vim.inspect(url))
+        open_browser(opts, "firefox", url)
         -- Do query here
       end)
       return true
     end
   }):find()
 end
-
 -- local url = string.format(docs.get_docs_url(), "insert query here")
-
 query()
