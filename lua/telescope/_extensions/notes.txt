@@ -1,0 +1,11 @@
+Features
+
+Feature 1:
+  - Have an action that searches the corresponding documentation depending on the file type (utilising treesitter and telescope);
+  E.g a doc search inside of a .rs file searches the rust docs with the provided query.
+
+Feature 2:
+  - Have an action that searches a query from a user selected site (sites are configured in the telescope configuration)
+
+Feature extension 1:
+  - Have an option in both actions 1, 2 to search the visualized text. 
