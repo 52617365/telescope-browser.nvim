@@ -11,15 +11,15 @@ local G = {}
 --
 -- Contains the corresponding documentation page.
 G.docs_urls = {
-  ["lua"] = "https://www.google.com/search?q=%s?as_sitesearch=lua.org/manual/5.4/",
-  ["rust"] = "https://doc.rust-lang.org/std/index.html?search=%s",
-  ["cpp"] = "https://www.google.com/search?q=%s?as_sitesearch=site:cppreference.com",
-  ["c"] = "https://www.google.com/search?q=%s?as_sitesearch=site:cppreference.com",
-  ["java"] = "https://docs.oracle.com/search/?q=%s&category=java&product=en%2Fjava",
-  ["javascript"] = "https://developer.mozilla.org/en-US/search?q=%s",
-  ["php"] = "https://www.php.net/manual-lookup.php?pattern=%s&scope=quickref",
-  ["vim"] = "https://vim.fandom.com/wiki/Special:Search?query=%s&scope=internal&contentType=&ns%5B0%5D=0",
-  ["kotlin"] = "https://kotlinlang.org/docs/home.html?q=%s&s=full",
+  ["lua"] = [["https://www.google.com/search?q=%s&as_sitesearch=lua.org/manual/5.4"]],
+  ["rust"] = [["https://doc.rust-lang.org/std/index.html?search=%s"]],
+  ["cpp"] = [["https://www.google.com/search?q=%s&as_sitesearch=cppreference.com"]],
+  ["c"] = [["https://www.google.com/search?q=%s&as_sitesearch=cppreference.com"]],
+  ["java"] = [["https://docs.oracle.com/search/?q=%s&category=java&product=en%3Fjava"]],
+  ["javascript"] = [["https://developer.mozilla.org/en-US/search?q=%s"]],
+  ["php"] = [["https://www.php.net/manual-lookup.php?pattern=%s&scope=quickref"]],
+  ["vim"] = [["https://vim.fandom.com/wiki/Special:Search?query=%s&scope=internal&contentType=&ns%5B0%5D=0"]],
+  ["kotlin"] = [["https://kotlinlang.org/docs/home.html?q=%s&s=full"]],
 }
 
 -- Gets the correct file type from treesitter.
