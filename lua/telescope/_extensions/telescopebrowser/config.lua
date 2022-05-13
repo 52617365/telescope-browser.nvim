@@ -9,7 +9,6 @@ local opts = {}
 -- #############################################################
 --
 -- Contains the corresponding documentation page.
-
 opts.docs = {
   ["lua"] = [["https://www.google.com/search?q=%s&as_sitesearch=lua.org/manual/5.4"]],
   ["rust"] = [["https://doc.rust-lang.org/std/index.html?search=%s"]],
