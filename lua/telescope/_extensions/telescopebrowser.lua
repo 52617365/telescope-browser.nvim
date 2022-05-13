@@ -5,13 +5,13 @@ if not has_telescope then
 end
 
 local default_config = require "telescope._extensions.telescopebrowser.config"
-local browse_docs = require "telescope._extensions.telescopebrowser.browse_docs"
+local telescopebrowser = require "telescope._extensions.telescopebrowser.browser"
 
 return require("telescope").register_extension {
   setup = function(ext_config)
     default_config.docs = ext_config.docs or default_config.docs
   end,
   exports = {
-    browse = browse_docs
+    browser = telescopebrowser.query
   }
 }
