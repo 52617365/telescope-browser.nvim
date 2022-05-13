@@ -1,10 +1,7 @@
-local api = vim.api
-local ts_utils = require 'nvim-treesitter.ts_utils'
-local parsers = require 'nvim-treesitter.parsers'
-local Mod = {}
-
+local G = {}
 -- Returns the text contents of the visualized text.
-Mod.visual_selection_contents = function()
+
+G.visual_selection_contents = function()
   -- does not handle rectangular selection
   local s_start = vim.fn.getpos("'<")
   local s_end = vim.fn.getpos("'>")
@@ -17,25 +14,10 @@ Mod.visual_selection_contents = function()
     else
       lines[n_lines] = string.sub(lines[n_lines], 1, s_end[3])
     end
-    local namespaces = vim.api.nvim_get_namespaces()["hlyank"]
-    -- print(vim.inspect(namespaces))
-    -- vim.api.nvim_buf_clear_namespace(0, namespaces["hlyank"], s_start, s_end)
-    vim.api.nvim_buf_clear_namespace(0, namespaces, 0, -1)
     return lines
   else
     return ""
   end
 end
 
---package.config:sub(1,1) returns the path separator, which is '\\' on Windows and '/' on Unixes.
-Mod.OS = function()
-  local os = package.config:sub(1, 1)
-  if os == '\\' then
-    return 'windows'
-  else if os == '/' then
-      return 'unix'
-    else
-      return nil
-    end
-  end
-end
+return G
