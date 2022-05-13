@@ -11,9 +11,14 @@ local action_state = require "telescope.actions.state"
 --######          the documentation searching one.        #####
 --#############################################################
 
+-- local open_browser = function(opts, browser, url)
+--   local query = browser .. " " .. url
+--   vim.fn.jobstart(query)
+-- end
+
 local open_browser = function(opts, browser, url)
-  local query = browser .. url
-  vim.fn.jobstart(query)
+  local command = "silent !" .. browser .. " " .. url
+  vim.api.nvim_command(command)
 end
 
 -- local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
@@ -30,7 +35,7 @@ local query = function(opts)
         actions.close(prompt_bufnr)
         local selection = action_state.get_current_line() -- Gets the current line so we can use that as a query
         local url = string.format(docs.get_docs_url(), selection)
-        open_browser(opts, "firefox", url)
+        open_browser(opts, "open", url)
         -- Do query here
       end)
       return true
